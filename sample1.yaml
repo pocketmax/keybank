@@ -1,0 +1,38 @@
+defaults:
+  subject:
+    countryName: AU
+    state: AZ
+    localityName: Scottsdale
+    orgName: Internet Widgits Pty Ltd
+    orgUnitName: marketing
+    commonName: myserver.mycompany.com
+    emailAddress: me@you.com
+  genrsa: aes256
+  bits: 4096
+  days: 365
+
+certificates:
+  root:
+    days: 1024
+    subject:
+      state: CO
+    x509: true
+    bits: 2048
+  mydepartment:
+    parent: root
+    days: 1024
+    subject:
+      state: CO
+    x509: true
+    bits: 2048
+
+commonNames:
+  my.common.name:
+    certificate: mydepartment
+    bits: 2048
+    #request csr is optional
+    subject:
+      state: CA
+  #sign request from device with CA
+  request:
+    server1: test

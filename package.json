@@ -1,0 +1,10 @@
+{
+  "name": "keybling",
+  "main": "app.js",
+  "dependencies": {
+    "exec-sync": "^0.1.6",
+    "lodash": "^2.4.1",
+    "ursa": "^0.8.1",
+    "yamljs": "^0.2.1"
+  }
+}
