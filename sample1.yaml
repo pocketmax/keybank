@@ -11,28 +11,64 @@ defaults:
   bits: 4096
   days: 365
 
-certificates:
-  root:
-    days: 1024
-    subject:
-      state: CO
-    x509: true
+#PRIVATE!
+privateKeys:  #can also be used for root keys
+  name: myroot
+    gen: rsa
+    name: mycoolroot
+    des3: true    #password required
     bits: 2048
-  mydepartment:
-    parent: root
-    days: 1024
-    subject:
-      state: CO
-    x509: true
+  name: my.server
+    gen: rsa
+    des3: true    #password required
+    bits: 2048
+  name: my.client.1
+    gen: rsa
+    des3: true    #password required
+    bits: 2048
+  name: my.client.2
+    gen: rsa
+    des3: true    #password required
+    bits: 2048
+  name: my.client.3
+    gen: rsa
+    des3: true    #password required
     bits: 2048
 
-commonNames:
-  my.common.name:
-    certificate: mydepartment
+certificateSigningRequests:
+  name: my.client.1.csr
+    privateKey: my.client.1
+    sha256: true
+    x509: true
+    days: 365
+
+
+certificates:   #names are common names of cert
+  rootCA:
+    parent: myroot  #private key if rootCertificate is true
+    rootCertificate: true
+    days: 1024
+    key: rootCA
+    x509: true
     bits: 2048
-    #request csr is optional
+  my.department.com:
+    parent: otherCert #a certificate
+    days: 1024
     subject:
-      state: CA
-  #sign request from device with CA
-  request:
-    server1: test
+      state: CO
+    x509: true
+
+openvpn:
+  server: my.server
+  clients:
+    - my.client.1
+    - my.client.2
+    - my.client.3
+
+
+# note
+#docker run -d -e CONFIG=openvpn -e SERVER=my.client.1 -v /keys --name keyteller keybank
+#keybank
+#keybranch
+#keyteller
+
